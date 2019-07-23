@@ -1,4 +1,4 @@
-#Welcome to my Ruby Program!
+# Welcome to my Ruby Program!
 
 # Tout le monde veut ta POO
 
@@ -13,8 +13,8 @@ Execute *app.rb*, *app_2.rb*, or *app_3* to run program in its corresponding ver
 ## Content
 
 - **lib/** : Classes `Game` et `Player`, and data file for names list.
-- **spec/**: Execute *app_spec.rb*, *app_2_spec.rb*, or *app_3_spec* to check programs
-- **app_ -/2/3** : execution files.
+- **spec/**: Execute to check programs
+- **app** : execution files.
 - **Gemfile, Gemfile.lock** : Gem and dependencies. See below.
 
 ## Classes
