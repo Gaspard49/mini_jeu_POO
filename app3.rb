@@ -33,6 +33,7 @@ loop do
 
   while my_game.is_still_ongoing?
     my_game.show_players
+    my_game.new_players_in_sight
     my_game.menu
 
     puts "\n\nType your choice:"

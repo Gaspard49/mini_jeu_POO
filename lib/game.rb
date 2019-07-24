@@ -3,31 +3,53 @@
 require_relative 'player'
 
 class Game < HumanPlayer #My Game
-  attr_accessor :human_player, :enemies
+  attr_accessor :human_player, :players_left, :enemies_in_sight
 
   def initialize(name)
     @human_player = HumanPlayer.new(name)
-    @enemies = []
+    @enemies_in_sight = []
     i = 1
     4.times do
-      @enemies << Player.new("Bot#{i}")
+      @enemies_in_sight << Player.new("Bot#{rand(10..50)}")
       i += 1
     end
+    @players_left = @enemies_in_sight.length
   end
 
   def kill_player
-    @enemies.each do |enemy|
-      @enemies.delete(enemy) if enemy.life_points <= 0
+    @enemies_in_sight.each do |enemy|
+      @enemies_in_sight.delete(enemy) if enemy.life_points <= 0
     end
   end
 
   def is_still_ongoing?
-    true if @enemies.any? == true && @human_player.life_points.positive?
+    true if @enemies_in_sight.any? == true && @human_player.life_points.positive?
+  end
+
+  def new_players_in_sight
+    if players_left <= @enemies_in_sight.length
+      puts "All the enemies are already in sight."
+    else
+      dice = rand(0..6)
+      if dice == 1
+        puts "No other enemy coming"
+      elsif dice >= 2 && dice <= 4
+        name = "Bot#{rand(10..50)}"
+        @enemies_in_sight << Player.new(name)
+        puts "Oh no! #{name} is in sight!"
+      else
+        name = "Bot#{rand(10..50)}"
+        name2 = "Bot#{rand(10..50)}"
+        @enemies_in_sight << Player.new(name)
+        @enemies_in_sight << Player.new(name2)
+        puts "Oh no! #{name} and #{name2} are in sight!"
+      end
+    end
   end
 
   def show_players
     @human_player.show_state
-    puts "There is #{@enemies.length} enemies left"
+    puts "There is #{@enemies_in_sight.length} enemies left"
   end
 
   def menu
@@ -36,7 +58,7 @@ class Game < HumanPlayer #My Game
     puts "s - search for a health pack\n\n"
     puts 'Attack a player:'
     i = 1
-    @enemies.each do |enemy|
+    @enemies_in_sight.each do |enemy|
       print "#{i} -"
       enemy.show_state
       i += 1
@@ -52,8 +74,8 @@ class Game < HumanPlayer #My Game
 
     else
       user_choice = user_choice.to_i
-      if user_choice >= 1 && user_choice <= @enemies.length
-        @human_player.attacks(@enemies[user_choice - 1])
+      if user_choice >= 1 && user_choice <= @enemies_in_sight.length
+        @human_player.attacks(@enemies_in_sight[user_choice - 1])
       else
         puts "\n\nWrong input! You passed your turn..."
       end
@@ -62,14 +84,14 @@ class Game < HumanPlayer #My Game
   end
 
   def enemies_attack
-    unless @enemies.empty?
+    unless @enemies_in_sight.empty?
       puts "\n\nThe others players are attacking you!"
       puts "\n\nPress Enter to continue"
       gets
       system 'clear'
     end
 
-    enemies.each do |enemy|
+    enemies_in_sight.each do |enemy|
       enemy.attacks(@human_player)
       puts "\n\nPress Enter to continue"
       gets
@@ -78,7 +100,7 @@ class Game < HumanPlayer #My Game
   end
 
   def end
-    if @human_player.life_points.positive? && @enemies.empty?
+    if @human_player.life_points.positive? && @enemies_in_sight.empty?
       puts '##########################################################################'
       puts "
       ██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗ ██████╗ ███╗   ██╗

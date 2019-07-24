@@ -24,7 +24,9 @@ Execute *app.rb*, *app_2.rb*, or *app_3* to run program in its corresponding ver
 Provides methods and variables to organize game process and its different phases.
 
 - \# human_player
-- \# ennemies
+- \# ennemies_in_sight
+-\# players_left
+-\# new_players_in_sight
 - \# initialize
 - \# kill_players
 - \# is_still_going?
